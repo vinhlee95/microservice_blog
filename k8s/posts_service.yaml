@@ -1,3 +1,7 @@
+# NodePort service
+# ⚠️ DEVELOPMENT only
+# Used to expose the Pod's port to outside world, so that we could access to the Pod such as:
+# curl <minkube_ip_address>:<nodePort>/posts
 apiVersion: v1
 kind: Service
 metadata:
@@ -13,3 +17,19 @@ spec:
       # Optional field
       # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
       nodePort: 30007
+
+---
+# ClusterIP service
+# Used to open communication with another Pod within the same cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: posts
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
