@@ -6,8 +6,7 @@ export default ({ postId }) => {
 
   const onSubmit = async event => {
     event.preventDefault();
-    // TODO: use comment clusetIP service name here
-    await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
+    await axios.post(`http://comment-cluster-ip-service:4001/posts/${postId}/comments`, {
       content
     });
 

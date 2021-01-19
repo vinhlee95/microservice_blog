@@ -24,15 +24,19 @@ app.post('/posts/:id/comments', async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
-  await axios.post('http://localhost:4005/events', {
-    type: 'CommentCreated',
-    data: {
-      id: commentId,
-      content,
-      postId: req.params.id,
-      status: 'pending'
-    }
-  });
+  try {
+    await axios.post('http://event-bus-cluster-ip-service:4005/events', {
+      type: 'CommentCreated',
+      data: {
+        id: commentId,
+        content,
+        postId: req.params.id,
+        status: 'pending'
+      }
+    });
+  } catch(error) {
+    console.error("Error in notifying Event service", error)
+  }
 
   res.status(201).send(comments);
 });
@@ -51,7 +55,7 @@ app.post('/events', async (req, res) => {
     });
     comment.status = status;
 
-    await axios.post('http://localhost:4005/events', {
+    await axios.post('http://event-bus-cluster-ip-service:4005/events', {
       type: 'CommentUpdated',
       data: {
         id,
