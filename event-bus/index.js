@@ -15,7 +15,7 @@ app.post('/events', (req, res) => {
   // Notify other services
   axios.post('http://posts-cluster-ip-service:4000/events', event);
   axios.post('http://comment-cluster-ip-service:4001/events', event);
-  // axios.post('http://localhost:4002/events', event);
+  axios.post('http://event-bus-cluster-ip-service:4002/events', event);
   // axios.post('http://localhost:4003/events', event);
 
   res.send({ status: 'OK' });
