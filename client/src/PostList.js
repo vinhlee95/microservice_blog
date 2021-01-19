@@ -7,6 +7,7 @@ export default () => {
   const [posts, setPosts] = useState({});
 
   const fetchPosts = async () => {
+    // TODO: change this to use query clusterIP service name
     const res = await axios.get('http://localhost:4002/posts');
 
     setPosts(res.data);
