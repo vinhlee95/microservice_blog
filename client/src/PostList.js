@@ -8,7 +8,7 @@ export default () => {
 
   const fetchPosts = async () => {
     // TODO: change this to use query clusterIP service name
-    const res = await axios.get('http://query-cluster-ip-service:4002/posts');
+    const res = await axios.get('http://posts.com/posts');
 
     setPosts(res.data);
   };
