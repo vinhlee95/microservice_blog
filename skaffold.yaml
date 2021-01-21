@@ -1,0 +1,60 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+  name: blog
+build:
+  local:
+    push: false
+  artifacts:
+    - image: vinhlee95/blog_client_service
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: vinhlee95/blog_comment_service
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: vinhlee95/blog_event_bus_service
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: vinhlee95/blog_moderation_service
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: vinhlee95/blog_post_service
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: vinhlee95/blog_query_service
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
